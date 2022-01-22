@@ -10,7 +10,8 @@ dlgtitle = 'Participant info';
 dims = [1 40]; 
 definput = {'1'};
 pID = inputdlg(prompt,dlgtitle,dims,definput);
-
+% for debugging reasons
+%pID = '1';
 %% PTB initialization
 % Default settings for Psychtoolbox 
 % 1 = Executes AssertOpenGL to initialize the API for writing on the graphics
@@ -26,6 +27,8 @@ InitializePsychSound;
 % when we have more than one screen attached 
 screens = Screen('Screens');
 screenNumber = max(screens);
+
+Screen('Preference', 'SkipSyncTests', 1);
 
 %% Preparing experiment variables
 
@@ -56,11 +59,9 @@ expInfo.sounds = ["./Assets/neg_feedback.wav" "./Assets/pos_feedback.wav"];
 expInfo.paletteGrey     = [194/255 194/255 235/255];
 expInfo.paletteRed      = [255/255 68/255 59/255];
 expInfo.paletteDarkGrey = [109/255 93/255 95/255];
-
-% Define black and white based on screen luminescence
-expInfo.paletteWhite = WhiteIndex(screenNumber);
-expInfo.paletteBlack = BlackIndex(screenNumber);
-expInfo.screenGrey   = expInfo.paletteWhite / 2;
+expInfo.paletteWhite = [1 1 1];
+expInfo.paletteBlack = [0 0 0];
+expInfo.screenGrey   = [0.5 0.5 0.5];
 
 % Setting information for drawing the the fixation cross
 expInfo.fixCrossDimPix   = 50;
@@ -124,8 +125,9 @@ function doTraining(w, expInfo)
         % (2) the color of the rectangle
         % (3) the coordinates where to draw it, if missing default is entire window 
         Screen('FillRect', w, expInfo.paletteDarkGrey, []);
-        % Preparing some infor for the text to display
-        Screen('TextFont',w, 'DejaVu Sans',1+2);
+
+        % [We just want to change the font size ]
+        Screen('TextFont',w, 'Helvetica',3);
         Screen('TextSize',w, 80);
 
         mTextT = ' __Super Mario Matlab__';
@@ -142,7 +144,7 @@ function doTraining(w, expInfo)
         % Returns
         % 1/2 coordinate of text drawing cursor at the last character draw
         % 3 rect containing the bounding box enclosing the text
-        [~, ~, bbox] = DrawFormattedText(w, mTextT, 'center', expInfo.screenYpixels * 0.2,  [expInfo.paletteRed, 1]);
+        [~, ~, bbox] = DrawFormattedText(w, mTextT, 'center', expInfo.screenYpixels * 0.2,  expInfo.paletteRed);
         % For the title we are adding a new drawing using the bounding box
         % information. FrameRect draws only the outline of a rectangle with
         % a specified thickness.
@@ -249,8 +251,8 @@ function doTraining(w, expInfo)
 
         % Catching any error will securely close the window and then
         % rethrow the error
-        sca;
-        ShowCursor;
+        sca; Screen('CloseAll');
+        ShowCursor; 
         rethrow(ME);
 
     end
