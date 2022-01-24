@@ -1,10 +1,10 @@
-%% This script accompanies the "Psychtoolbox - a gentle introduction" 
-%  lectures from the UCL Institute of Cognitive Neuroscience Matlab Course.
-%  All course details and content - including pre-recorded lectures, 
-%  slides, practical exercises and solutions - can be found on the course 
-%  website: https://moodle.ucl.ac.uk/course/view.php?id=22765
+%% This script accompanies the "Psychophysics toolbox (PTB) - a gentle introduction" lectures from the UCL
+%  Institute of Cognitive Neuroscience Matlab Course. All course details
+%  and content - including pre-recorded lectures, slides, practical
+%  exercises and solutions - can be found on the course website:
+%  https://moodle.ucl.ac.uk/course/view.php?id=22765
 %
-%  Andrea Castegnaro, UCL (2022) a.castegnaro@ucl.ac.uk
+%  Andrea Castegnaro, UCL (2022) uceeaca@ucl.ac.uk
 
 % [In this example we are going to create a simple game which will show all
 % the basic functionalities of Psychophysics tool box (PTB) Matlab package.
@@ -28,25 +28,6 @@
 % Clear the workspace and the openened windows
 close all; clear;
 
-% [Then we want to obtain a participant ID, which we will use to save the
-% data for this session. We can create a dialog box to do this, using the
-% built in matlab 'inputdlg' function. This function requires the
-% following inputs: a prompt to be displayed into the dialog box, a text
-% that will be put onto the window bar of the dialog box, a number
-% specifying how many lines are required for the answer, a default answer
-% to be diplayed in the dialog box upon presentation. The function returns
-% the information the user input.
-% Before calling the 'inputdlg' function let' s prepare the variables for the
-% function. You could put the variables directly into the function but in
-% this case we are doing it to make the execution clearer to the reader
-% reader).]
-
-prompt      = {'Enter participant ID:'}; %text displayed inside the dialog to help the user understand which information is needed
-dlgtitle   	= 'Participant info'; % text presented on the top bar of the dialog box
-dims        = 1; % indicates how many lines we need the input field to be. 1 is enough for a single number.
-definput    = {'1'}; % indicate a default input filed text
-pID         = inputdlg(prompt,dlgtitle,1,definput); % opens the dialog box
-
 %% PTB initialization
 %
 %  [Next, we need to initialise Psychtoolbox. This
@@ -59,15 +40,6 @@ pID         = inputdlg(prompt,dlgtitle,1,definput); % opens the dialog box
 %  2 so let's do that here:]
 Screen('Preference', 'SkipSyncTests', 1);
 PsychDefaultSetup(2);
-
-% [Next, we nede to initialize the sound. This step is necessary only if
-% you are planning to play any sound throughout your exeperimen otherwise
-% you can skip it. The PTB 'InitializePsychSound' perform this]
-InitializePsychSound;
-
-% [Then similar explanation for the other things - what each function does,
-% does it need any inputs, why else might you use it, would you ever not
-% use it etc. Don't include any information they don't NEED to know]
 
 % [In most experimental setups you will have more than one screen. In this
 % case we want to output the PTB window to the external screen presented in
@@ -108,7 +80,9 @@ screenNumber    = max(screens);
 addpath('./Assets');
 
 % [It is a good practice to save results from the task in different folders, therefore 
-% we are also going to add another folder called results]
+% we are also going to add another folder called results. Don t worry about
+% this now it will be used on the second part of the challenge (PTB lecture
+% two).]
 addpath('./Results');
 
 % [We are now ready to prepare the experimental variables. How
@@ -117,16 +91,10 @@ addpath('./Results');
 % make flexible for the experiment (e.g. number of trials, trial duration, etc.)
 % Let's use a struct called expInfo containing all of this information]
 
-% [Let's save in the expINfo the participant ID we get from the dialog box]
-expInfo.pID                 = pID;
-
 % [In this task there will be a fixed number of different stimuli. We want to let the experimenter decide how many times
 % those stimuli will be presented. For this reason let's create an experimental variable to keep the number of time we want 
 % to present the set of stimuli]
 expInfo.nImagesRepeat       = 2;
-% [The user will have a certain amount of time to react an enemy image when presenting on the screen.
-% Let's make this information variable. Let's save the duration (in seconds) of each stimuli]
-expInfo.trialDuration       = 2;
 
 % [In this part we are going to prepare the information about the images. 
 % The images will be a fixed set of stimuli. In the tutorial we are going
@@ -138,23 +106,28 @@ expInfo.trialDuration       = 2;
 % image in the assets folder called Gommba.png and that can avoided by Mario with using the
 % up arrow. In this way it will be easier later to check when presenting Goomba which correct key we are expecting.]
 
-% [Let s create a vraible with the names of the images in a char array]
+% [Let s create a variable with the names of the images in a char array]
 expInfo.imagesName          = {'Goomba','Lakitu','Bill','Super Hammer'};
 
 % [Let s create a variable with the path to the files]
 expInfo.images              = {'./Assets/Goomba.png','./Assets/Lakitu.png','./Assets/Bill.png','./Assets/SuperHammer.png'};
 
-% [Let s create a variable containg an array of integers which represent a specific key in the keyboard. Each key is identified by a unique integer.
+% [Let s create a variable containg an array of integers which represent a
+% specific key in the keyboard. Each key is identified by a unique integer.
 % We are going to use the PTB function 'KbName' that holds a mapping
-% between the integers and the keyboard names. Tip: Keyboard names are unique in
-% PTB. Run KbName('KeyNames') in the command window to print out the mapping PTB uses between names and code for keys]
+% between the integers and the keyboard names. Tip: Keyboard names are
+% unique in PTB. Run KbName('KeyNames') in the command window to print out
+% the mapping PTB uses between names and code for keys]
 
-% [We want the user to just use arrow keys to react to the images. We have four different images and four different arrow keys]
+% [We want the user to just use arrow keys to react to the images. We have
+% four different images and four different arrow keys.]
 expInfo.imagesKeyPresses    = [KbName('UpArrow') KbName('RightArrow') KbName('DownArrow') KbName('LeftArrow')];
 
-% [Sometimes stimuli will have different pixel resolutions. Since we want them to occupy the same portion of 
-% screen we are going to scale them manually before presenting them. Let's save this information here as a number representing how much
-% an image should be scaled in proportion to its real size e.g. 0.5 means halving the size of the image]
+% [Sometimes stimuli will have different pixel resolutions. Since we want
+% them to occupy the same portion of screen we are going to scale them
+% manually before presenting them. Let's save this information here as a
+% number representing how much an image should be scaled in proportion to
+% its real size e.g. 0.5 means halving the size of the image.]
 expInfo.imagesScale         = [0.3 0.9 0.2 0.5];
 
 % [Sometimes you would like to present stimuli as a flipped/mirrored image. 
@@ -162,13 +135,6 @@ expInfo.imagesScale         = [0.3 0.9 0.2 0.5];
 % so I am going to prepare a simple array that tells me whenever I need to flip an 
 % image using 1 or not using 0. This information is used later on to flip the images]
 expInfo.imagesFlip          = [1 1 0 1];
-
-% [After the end of a trial, we are going to provide a feedback depending
-% on the user pressing the correct arrow key or not.
-% We are going to prepare this feedback as an audio so we need a negative
-% and a positive audio feedback.
-% Let's create a variable holding the paths to these files.]
-expInfo.sounds              = {'./Assets/neg_feedback.wav','./Assets/pos_feedback.wav'};
 
 % [During the game some of the elements that are going to be drawn on the
 % screen may have a specific color.
@@ -195,27 +161,6 @@ expInfo.paletteDarkGrey     = [109/255 93/255 95/255];
 % [Black will be the background color of the PTB window]
 expInfo.paletteBlack        = [0 0 0];
 
-% [Before each of the stimuli we are going to propmt the attention of the
-% user by using a fixation cross placed at the centre of the screen.
-% In this example the fixation cross will be 'hand-drawn' as to line
-% segments placed at the center of the screen. 
-% In order to make the drawing more flexible we want to be able to easily
-% change the lenght of the segments, thickness and color. Let's then create
-% some variables to save this information.].
-
-% [Let s create a variable that will tell us how long the segment of the
-% fixation cross will be in pixels size]
-expInfo.fixCrossDimPix      = 50;
-% [Let s define a thickness for the line]
-expInfo.fixLineWidthPix     = 10;
-% [Let s define a color for the fixation]
-expInfo.paletteWhite        = [1 1 1];
-
-% [We would like to modify the duration for which the fixation cross will
-% be on the screen. For this purpose let's create a variable that gives us
-% the duration in seconds]
-expInfo.fixCrossDuration    = 1;
-
 %% Initializing PTB window
 % [We have now set all the experimental variables that we are going to use
 % in the game. It is now time to start using PTB to open a window where we
@@ -231,15 +176,15 @@ expInfo.fixCrossDuration    = 1;
 % just opened and the dimension in pixels of the openend window.
 % The window pointer will be used later on to instruct any drawing function
 % to the correct window.]
-[window, windowRect]        = PsychImaging('OpenWindow', screenNumber, expInfo.paletteBlack, []); % WHAT IS THIS FUNCTION? WHAT DOES IT DO?
+[window, windowRect]        = PsychImaging('OpenWindow', screenNumber, expInfo.paletteBlack, []);
 
 % [Now, from windowRect let's calculate the lenght of the window in pixels
 % size in the x and y coordinate. This will be used later to draw
-% shapes/texts offset according to the window dimension.]
-expInfo.screenXstart        = windowRect(1);
-expInfo.screenYstart        = windowRect(2); 
-expInfo.screenXpixels       = windowRect(3)-windowRect(1); 
-expInfo.screenYpixels       = windowRect(4)-windowRect(2);
+% shapes/texts offset according to the window dimension. Drawing objects
+% with coordinates relative to the window size give us the possibility to
+% be more independent on different screen resolutions.]
+expInfo.screenXpixels       = windowRect(3); 
+expInfo.screenYpixels       = windowRect(4);
 
 % [We want also to calculate the center of the window in pixel coordinate.
 % This will be helpful when drawing the fixation cross for example.
@@ -248,9 +193,10 @@ expInfo.screenYpixels       = windowRect(4)-windowRect(2);
 % window.]
 [expInfo.Xcenter, expInfo.Ycenter] = RectCenter(windowRect); 
 
-% [When drawing shapes into a PTB window we need to specify how the screen
-% color needs to behave when we color the same pixel on the screen by using
-% the . Don't worry too much about this and let's just set a standard 
+% [When drawing object into a PTB window we need to specify how the screen
+% color needs to behave when two colors overlap and have been provided with
+% an alpha channel < 1. Let's use a standard blending. Don't worry too much
+% about this and always set it as follows when drawing shapes in your task.
 Screen('BlendFunction', window, 'GL_SRC_ALPHA', 'GL_ONE_MINUS_SRC_ALPHA');
 
 %% Training
@@ -358,7 +304,7 @@ function doTraining(window, expInfo)
         % This has the advantage to be resolution independent. From the
         % function we are going to save the rectangular that encloses the
         % entire text.
-        [~, ~, bbox] = DrawFormattedText(window, mTextT, 'center', expInfo.screenYstart + expInfo.screenYpixels * 0.2, expInfo.paletteRed);
+        [~, ~, bbox] = DrawFormattedText(window, mTextT, 'center', expInfo.screenYpixels * 0.2, expInfo.paletteRed);
 
         % [As a nice touch we are going to add is a frame for the title. We can
         % use the Screen sub-function 'FrameRect' to draw a frame providing
@@ -443,7 +389,7 @@ function doTraining(window, expInfo)
             % the upper center part of the screen. As before we are going
             % to use relative coordinates by taking a portion of the
             % current height of the window to find a suitable upper position.
-            DrawFormattedText(window, mText, 'center', expInfo.screenYstart + expInfo.screenYpixels * 0.2,  expInfo.paletteGrey);            
+            DrawFormattedText(window, mText, 'center', expInfo.screenYpixels * 0.2,  expInfo.paletteGrey);            
             
             % [NExt,we are going to draw the images. Before doing that we
             % need to load them as a file. We previously saved the lcoation
@@ -486,7 +432,7 @@ function doTraining(window, expInfo)
             % [We are now ready to present the screen to the user. This
             % requires a flip of the PTB windoww.]
             Screen('Flip',window);
-            
+
             % [In the next section we are going to wait for the correct key
             % press from the user. The key to be pressed is the one that
             % has been prompted in the previous section.]
@@ -546,6 +492,9 @@ function doTraining(window, expInfo)
         
         Screen('Flip',window);
         
+                    a = Screen('GetImage', window);
+        imwrite(a,"ScreenShot1.png");
+
         % [Let's wait for any key press]
         KbWait;
         KbReleaseWait;

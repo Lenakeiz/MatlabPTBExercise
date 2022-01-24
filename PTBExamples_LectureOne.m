@@ -1,4 +1,4 @@
-%% This script accompanies the "PSychtoolbox (PTB) - a gentle introduction" lectures from the UCL
+%% This script accompanies the "Psychophysics toolbox (PTB) - a gentle introduction" lectures from the UCL
 %  Institute of Cognitive Neuroscience Matlab Course. All course details
 %  and content - including pre-recorded lectures, slides, practical
 %  exercises and solutions - can be found on the course website:
@@ -6,12 +6,12 @@
 %
 %  Andrea Castegnaro, UCL (2022) uceeaca@ucl.ac.uk
 
-% [This scripts contains the code presented during the first PTB lecture.
-% We are going to present different simple uses of basic functions
-% available in PTB. Every example is contained into different code sections
-% (outlined using %% a the beginning of the section) Each section is
-% completely standalone so to run them separately you can use ctrl+Enter on
-% windows to run only the code written in that section.]
+% [This scripts accompanies the code presented during the first PTB lecture.
+% We are going to present different simple application program interface APIs
+% available with PTB. Every example is contained into different code sections
+% (outlined using the double comment  %% a the beginning of the section).
+% Each section is completely standalone and you can run it by clicking Run
+% section or hitting the relative keyboard shortcut.]
 
 %% Example 1 
 % [Opening a PTB window on top left of the screen coordinate.]
@@ -27,7 +27,11 @@ clear all;
 %  value specifies a different type of setup. Don't worry about the details
 %  for now - you will almost always use a value of 2. Before doing that we
 %  are also saying to PTB to avoid any syncing test relative to our screen.
-%  Sync test is used by PTB to make sure the screen flip will happen
+%  Sync test is performed automatically by PTB to make sure the screen flip
+%  is in line with the screen refresh rate (Hz). Nowadays it is not really
+%  necessary as refresh rates are really high for recent monitors, so we
+%  are going to prevent PTB performing initial checks that could arise in
+%  errors.
 Screen('Preference', 'SkipSyncTests', 1);
 PsychDefaultSetup(2);
 
@@ -57,9 +61,9 @@ try
     % just opened and the rectangular dimension in pixels of the openend window.
     % The window pointer will be used later on to instruct any drawing function
     % to the correct window.]
-    [window, sourceRect] = PsychImaging('OpenWindow', 0, [0 0 0], [ 100 100 900 700]);
+    [window, sourceRect] = PsychImaging('OpenWindow', 0, [0 0 0], [ 1200 300 1600 700]);
 
-    % [Let s wait for any key presses. See example for PTB key function details]
+    % [Let s wait for any key change. See example 10 for PTB basic keyboard functions]
     KbWait;
 
     % [After completing the operations we are interested in we have to
@@ -116,11 +120,12 @@ try
     % Open a full screen PTB window with a gray background color
     [window, sourceRect] = PsychImaging('OpenWindow', screenNumber, [0.5 0.5 0.5], []);
     
-    % [Let s wait for any key presses. See example for PTB key function details]
+    % [Let s wait for any key change. See example 10 for PTB basic keyboard functions]
     KbWait;
 
     % [Closing all PTB window]
     sca;
+
 catch ME 
 
     % [Closing all PTB window]
@@ -165,8 +170,8 @@ try
     % screen we can call it now. 
     Screen('Flip',window);
 
-    % [Let s wait for some seconds]
-    WaitSecs(3);
+    % [Let s wait for any key change. See example 10 for PTB basic keyboard functions]
+    KbWait;
 
     % [Closing all PTB window]
     sca;
@@ -223,7 +228,8 @@ try
     % visible to the user on the PTB window. Let s do it here]
     Screen('Flip',window);
 
-    WaitSecs(3);
+    % [Let s wait for any key change. See example 10 for PTB basic keyboard functions]
+    KbWait;
 
     ShowCursor;
 
@@ -266,7 +272,8 @@ try
     % visible to the user on the PTB window. Let s do it here]
     Screen('Flip',window);
 
-    WaitSecs(3);
+    % [Let s wait for any key change. See example 10 for PTB basic keyboard functions]
+    KbWait;
 
     ShowCursor;
 
@@ -327,7 +334,8 @@ try
     % visible to the user on the PTB window. Let s do it here]
     Screen('Flip',window);
 
-    WaitSecs(3);
+    % [Let s wait for any key change. See example 10 for PTB basic keyboard functions]
+    KbWait;
 
     % [Let s unhide the mouse using the PTB function HideCursor.]
     ShowCursor;
@@ -415,8 +423,8 @@ try
     % visible to the user on the PTB window. Let s do it here]
     Screen('Flip',window);
 
-    % [Wait some seconds.]
-    WaitSecs(3);
+    % [Let s wait for any key change. See example 10 for PTB basic keyboard functions]
+    KbWait;
 
     % [Let s unhide the mouse using the PTB function HideCursor.]
     ShowCursor;
@@ -480,8 +488,8 @@ try
     % visible to the user on the PTB window. Let s do it here.]
     Screen('Flip',window);
 
-    % [Wait some seconds.]
-    WaitSecs(3);
+    % [Let s wait for any key change. See example 10 for PTB basic keyboard functions]
+    KbWait;
 
     % [Let s unhide the mouse using the PTB function HideCursor.]
     ShowCursor;
@@ -558,7 +566,7 @@ try
 
     Screen('Flip',window);
 
-    % [Wait some seconds.]
+    % [Let s wait for any key press. See example 10 for PTB basic keyboard functions]
     KbWait;
 
     % [Let s unhide the mouse using the PTB function HideCursor.]
