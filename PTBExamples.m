@@ -574,3 +574,62 @@ catch ME
     ShowCursor;
     rethrow(ME);
 end
+
+%% Example 10
+% [In this example we are going to show how to wait for keyboard presses
+% and how to check which arrow key is being pressed.]
+
+% [Let' s clear the workspace]
+clear all;
+
+Screen('Preference', 'SkipSyncTests', 1);
+
+% [For operating with the keyboard we still require some initialization
+% that luckily can be handled by using the default setup. So let's do it
+% here.]
+PsychDefaultSetup(2);
+
+addpath('./Assets');
+
+try
+
+    % [We are going to stop the exection of the script until
+    % the user presses a key on the keyboard. For this we can
+    % use the PTB function KbWait that waits for any key
+    % press.]
+    KbWait;
+
+    % [Right after a key is being pressed we can now then ask what kind of
+    % key was and what kind of the movement was detected
+    % e.g. a release or a press. The PTB function kbCheck can
+    % be used for checking this information. The function
+    % returns 1 if any key, including modifiers e.g. Shift/alt is down, 0
+    % otherwise, returns the time in seconds since the beginning of the
+    % script and an array with all of the key detected at this point. Since
+    % we are following the 'KbCheck' after a KbWait we are sure one key is
+    % being pressed so we are going to return only the keyCode of that
+    % pressed key.]
+    [~, ~, keyCode] = KbCheck;
+
+    % [At this point we are expecting only one key press. Since
+    % keyCode is a 256-element array we are going to find the
+    % only 1 in the array. That index is the keycode pressed at
+    % this time. Let's find it by using the Matlab function find which
+    % receive as an input an array and the desired number we are looking for
+    % and returns an array of indices indicating the position of the array
+    % elements that are equal to the desired number
+    keyCode = find(keyCode, 1);
+
+    % [We can now finally print to the command window the name of the
+    % keyboard that has been pressed. For this we use the PTB function
+    % 'KbName' that holds a mapping between the integers and the keyboard
+    % names. Tip: Keyboard names are unique in PTB. Run KbName('KeyNames')
+    % in the command window to print out the mapping PTB uses between names
+    % and code for keys for your system.]
+    disp(['You pressed key ' num2str(keyCode) ' which is ' KbName(keyCode)]);
+
+catch ME
+
+    disp(ME.message);
+
+end
