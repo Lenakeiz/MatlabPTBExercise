@@ -132,7 +132,7 @@ try
         % checking if keyIsDown is equal to one. At the same time
         % we are going to ask if we already registered a key press
         % for this trial by reading readResponse variable
-        if(keyIsDown && ~readResponse)
+        if(keyIsDown && ~inputReceived)
 
             % Reaction time will then be the difference between the
             % time returned from kbCheck and the time when we
@@ -200,7 +200,7 @@ try
 
     % We can measure the minimum time between two screen refreshes to
     % happen
-    screenRefreshRate = Screen('GetFlipInterval', window);
+    flipInterval = Screen('GetFlipInterval', window);
 
     % When dealing with timing we can instruct PTB to allocate the maximum
     % pc resources to the PTB window. That means the PTB window will have a
@@ -214,7 +214,7 @@ try
     % the nearest flip should happen provided the amount of time we would
     % like to wait
     requiredSeconds = 3;
-    totalWaitFromFrames = round(requiredSeconds / screenRefreshRate);
+    totalWaitFromFrames = round(requiredSeconds / flipInterval);
 
     % Screen can return a timestamp in seconds (similar to GetSecs). We can
     % then flip an empty back-buffer to get the current time when the
@@ -231,7 +231,7 @@ try
     
         % Flip to the screens only at a specific time using an optional
         % parameter. 
-        currentTime = Screen('Flip', window, currentTime + (totalWaitFromFrames - 0.5) * screenRefreshRate);
+        currentTime = Screen('Flip', window, currentTime + (totalWaitFromFrames - 0.5) * flipInterval);
         t2 = clock;
         disp(etime(t2,t1));
     end
@@ -473,7 +473,7 @@ try
     % samples per seconds (Hz) for the audio to be played and a number
     % indicating the number of default audio channels to use. The
     % function returns a pointer to our device handle
-    audioHandle = PsychPortAudio('Open',[],1,1,freq,nrChannels);
+    audioHandle = PsychPortAudio('Open',[],1,0,freq,nrChannels);
 
     % In similar way to images, PTB needs a special holder for the
     % audio in order to be played. The special holder is a buffer that
